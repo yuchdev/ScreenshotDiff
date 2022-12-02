@@ -2,10 +2,7 @@
 #include <QApplication>
 #include <QtGui>
 #include <QWidget>
-#include <QStackedWidget>
-#include <QScrollArea>
-#include <QLayout>
-#include <QPushButton>
+#include <QDesktopWidget>
 #include "diff_application.h"
 
 

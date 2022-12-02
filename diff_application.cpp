@@ -65,15 +65,15 @@ void DiffApplication::makeScreenshot()
 
 QWidget* DiffApplication::tabLayout(QWidget* parent)
 {
-    QTabWidget* wnd = new QTabWidget;
-    QVBoxLayout* box = new QVBoxLayout();
+    auto* wnd = new QTabWidget;
+    auto* box = new QVBoxLayout();
     firstPictureWgt_ = new ScreenshotWidget(this);
     secondPictureWgt_ = new ScreenshotWidget(this);
     firstPictureWgt_->setFilename(firstFilename);
     secondPictureWgt_->setFilename(secondFilename);
 
-    QWidget* pictureTab = new QWidget;
-    QVBoxLayout* pictureLayout = new QVBoxLayout;
+    auto* pictureTab = new QWidget;
+    auto* pictureLayout = new QVBoxLayout;
     diffPicture_ = new QLabel;
     pictureLayout->addWidget(diffPicture_);
     pictureTab->setLayout(pictureLayout);
@@ -113,7 +113,8 @@ void DiffApplication::diffScreenshot()
 
 void DiffApplication::displayDiffImage()
 {
-    // Display picture with 'diffFilename' in 'diffPicture_' label
-    diffPicture_->setPixmap(QPixmap(diffFilename));
+    QPixmap pic(diffFilename);
+
+    diffPicture_->setPixmap(pic.scaled(pic.size() / 2));
 }
 

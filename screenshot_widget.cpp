@@ -6,7 +6,6 @@
 #include <QApplication>
 #include <QDir>
 #include <QFile>
-#include <QMessageBox>
 #include "screenshot_widget.h"
 
 ScreenshotWidget::ScreenshotWidget(QWidget* parent /*= nullptr*/) :
@@ -15,7 +14,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget* parent /*= nullptr*/) :
     screen_picture_ = new QLabel(this);
     screen_picture_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    QVBoxLayout* layout = new QVBoxLayout;
+    auto* layout = new QVBoxLayout;
     layout->addWidget(screen_picture_);
     layout->setMargin(0);
     setLayout(layout);
