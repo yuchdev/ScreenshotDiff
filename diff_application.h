@@ -29,12 +29,12 @@ private:
 
     ///
     QPushButton* makeScreenshotBtn_ = nullptr;
-
-    ///
     QPushButton* diffScreenshotBtn_ = nullptr;
+    QLabel* diffPicture_ = nullptr;
 
-    ///
-    QLabel* diffPicture_;
+    QString firstFilenamePath_;
+    QString secondFilenamePath_;
+    QString diffFilenamePath_;
 
 
     QWidget* buttonLayout(QWidget* parent);

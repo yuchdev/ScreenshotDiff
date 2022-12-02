@@ -43,7 +43,7 @@ void ScreenshotWidget::makeScreenshot()
 
 QString ScreenshotWidget::saveScreenshot(const QPixmap& pic)
 {
-    QStringList appLocalPath = QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
+    QStringList appLocalPath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
 
     if (appLocalPath.isEmpty()) {
         return QString{};
@@ -61,6 +61,5 @@ QString ScreenshotWidget::saveScreenshot(const QPixmap& pic)
 
 void ScreenshotWidget::displayScreenshot(const QPixmap &pic)
 {
-    // Scale displayed picture twice as smaller
-    screen_picture_->setPixmap(pic.scaled(screen_picture_->size() / 2));
+    screen_picture_->setPixmap(pic.scaled(screen_picture_->size(), Qt::KeepAspectRatio));
 }

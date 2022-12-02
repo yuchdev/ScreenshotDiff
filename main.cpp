@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     DiffApplication wnd;
 
     // Get screen size, and make window twice as smaller
-    QRect screen = QApplication::desktop()->screenGeometry();
+    QRect screen = QGuiApplication::screens()[0]->geometry();
     wnd.resize(screen.width() / 2, screen.height() / 2);
     wnd.show();
 

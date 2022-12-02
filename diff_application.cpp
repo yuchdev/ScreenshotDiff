@@ -2,6 +2,10 @@
 #include <QLabel>
 #include <QPushButton>
 #include <QTabWidget>
+#include <QStandardPaths>
+#include <QDir>
+#include <QDebug>
+#include <iostream>
 #include "diff_application.h"
 #include "screenshot_widget.h"
 
@@ -18,6 +22,15 @@ DiffApplication::DiffApplication(QWidget* parent /*= nullptr*/) :
     QWidget(parent)
 {
     initWidgets();
+    QStringList appLocalPath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
+    firstFilenamePath_ = QDir(appLocalPath[0]).filePath(firstFilename);
+    secondFilenamePath_ = QDir(appLocalPath[0]).filePath(secondFilename);
+    diffFilenamePath_ = QDir(appLocalPath[0]).filePath(diffFilename);
+
+    qDebug() << "firstFilenamePath: " << firstFilenamePath_;
+    qDebug() << "secondFilenamePath: " << secondFilenamePath_;
+    qDebug() << "diffFilenamePath: " << diffFilenamePath_;
+
     connect(makeScreenshotBtn_, &QPushButton::clicked, this, &DiffApplication::makeScreenshot);
     connect(diffScreenshotBtn_, &QPushButton::clicked, this, &DiffApplication::diffScreenshot);
 }
@@ -63,7 +76,7 @@ void DiffApplication::makeScreenshot()
     }
 }
 
-QWidget* DiffApplication::tabLayout(QWidget* parent)
+QWidget* DiffApplication::tabLayout(QWidget*)
 {
     auto* wnd = new QTabWidget;
     auto* box = new QVBoxLayout();
@@ -91,30 +104,37 @@ QWidget* DiffApplication::tabLayout(QWidget* parent)
 
 void DiffApplication::diffScreenshot()
 {
-    QImage imageOne;
-    QImage imageTwo;
-    QImage resultImage;
+    QImage imageOne(firstFilenamePath_);
+    QImage imageTwo(secondFilenamePath_);
+    QImage resultImage(imageOne.size(), QImage::Format_RGB32);
 
     int w = imageOne.width();
     int h = imageOne.height();
+    qDebug() << "w = " << w << ", h = " << h;
 
     for(int i=0; i<h; i++){
         QRgb *rgbLeft=(QRgb*)imageOne.constScanLine(i);
         QRgb *rgbRigth=(QRgb*)imageTwo.constScanLine(i);
         QRgb *rgbResult=(QRgb*)resultImage.constScanLine(i);
-        for(int j=0;j<w;j++){
+
+        for(int j=0; j<w; j++){
             rgbResult[j] = rgbLeft[j]-rgbRigth[j];
         }
     }
+
     // Save resultImage as a file with name diffFilename
-    resultImage.save(diffFilename);
+    if(resultImage.save(diffFilenamePath_)){
+        qDebug() << "Diff image saved as " << diffFilenamePath_;
+    }
+    else {
+        qDebug() << "Diff image not saved";
+    }
     displayDiffImage();
 }
 
 void DiffApplication::displayDiffImage()
 {
-    QPixmap pic(diffFilename);
-
+    QPixmap pic(diffFilenamePath_);
     diffPicture_->setPixmap(pic.scaled(pic.size() / 2));
 }
 
