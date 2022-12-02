@@ -14,5 +14,11 @@ set(CMAKE_AUTOUIC ON)
 # Print ${PROJECT_SOURCE_DIR}
 
 include_directories(${PROJECT_SOURCE_DIR})
-add_executable(qt_minimal main.cpp screenshot_widget.cpp screenshot_widget.h diff_application.cpp diff_application.h)
+add_executable(qt_minimal main.cpp
+        screenshot_widget.cpp
+        screenshot_widget.h
+        diff_screenshot.cpp
+        diff_screenshot.h
+        diff_application.cpp
+        diff_application.h)
 target_link_libraries(qt_minimal Qt5::Core Qt5::Widgets)

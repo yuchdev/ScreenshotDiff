@@ -4,13 +4,20 @@
 #include <QTabWidget>
 #include "diff_application.h"
 #include "screenshot_widget.h"
-#include "diff_screenshot.h.h"
+#include "diff_screenshot.h"
 
+//static
+const char* DiffApplication::firstFilename{"DD02FBA6-73FD-4171-B9CF-5F9F5CDB41AA.jpg"};
+
+//static
+const char* DiffApplication::secondFilename{"DD02FBA6-73FD-4171-B9CF-5F9F5CDB41BB.jpg"};
 
 DiffApplication::DiffApplication(QWidget* parent /*= nullptr*/) :
     QWidget(parent)
 {
     initWidgets();
+    connect(makeScreenshotBtn_, &QPushButton::clicked, this, &DiffApplication::makeScreenshot);
+    connect(diffScreenshotBtn_, &QPushButton::clicked, this, &DiffApplication::diffScreenshot);
 }
 
 void DiffApplication::initWidgets()
@@ -39,7 +46,7 @@ QWidget* DiffApplication::button_layout(QWidget* parent){
     buttonLayout->addWidget(diffScreenshotBtn_, 2);
 
     wgt->setLayout(buttonLayout);
-    connect(makeScreenshotBtn_, &QPushButton::clicked, this, &DiffApplication::makeScreenshot);
+
     return wgt;
 }
 
@@ -80,4 +87,25 @@ QWidget* DiffApplication::screenshotWidget(QWidget* parent)
 //
 QWidget* DiffApplication::diff_screenshot(QWidget* parent)
 {
+    return new DiffScreenshotWidget(this);
 }
+
+void DiffApplication::diffScreenshot()
+{
+    QImage imageOne;
+    QImage imageTwo;
+    QImage resultImage;
+
+    int w = imageOne.width();
+    int h = imageOne.height();
+
+    for(int i=0; i<h; i++){
+        QRgb *rgbLeft=(QRgb*)imageOne.constScanLine(i);
+        QRgb *rgbRigth=(QRgb*)imageTwo.constScanLine(i);
+        QRgb *rgbResult=(QRgb*)resultImage.constScanLine(i);
+        for(int j=0;j<w;j++){
+            rgbResult[j] = rgbLeft[j]-rgbRigth[j];
+        }
+    }
+}
+

@@ -1,9 +1,10 @@
 #pragma once
 #include <QWidget>
 
-
 class QLabel;
 class QPushButton;
+class ScreenshotWidget;
+class DiffScreenshotWidget;
 
 class DiffApplication : public QWidget
 {
@@ -11,7 +12,7 @@ class DiffApplication : public QWidget
 
 public:
 
-    DiffApplication(QWidget* parent = nullptr);
+    explicit DiffApplication(QWidget* parent = nullptr);
 
     /// @brief Show full-screen screenshotWidget
     void initWidgets();
@@ -20,6 +21,7 @@ public slots:
 
     //
     void makeScreenshot();
+    void diffScreenshot();
 
 private:
 
@@ -35,7 +37,6 @@ private:
     ScreenshotWidget* second_picture_ = nullptr;
     ScreenshotWidget* active_picture_ = nullptr;
 
-    /// Counter for delayed strings appearance on the screen
-    size_t counter_ = 0u;
+    static const char* firstFilename;
+    static const char* secondFilename;
 };
-
