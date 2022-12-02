@@ -82,8 +82,8 @@ QWidget* DiffApplication::tabLayout(QWidget*)
     auto* box = new QVBoxLayout();
     firstPictureWgt_ = new ScreenshotWidget(this);
     secondPictureWgt_ = new ScreenshotWidget(this);
-    firstPictureWgt_->setFilename(firstFilename);
-    secondPictureWgt_->setFilename(secondFilename);
+    firstPictureWgt_->setFilename(firstFilenamePath_);
+    secondPictureWgt_->setFilename(secondFilenamePath_);
 
     auto* pictureTab = new QWidget;
     auto* pictureLayout = new QVBoxLayout;
@@ -99,8 +99,6 @@ QWidget* DiffApplication::tabLayout(QWidget*)
     wnd->setLayout(box);
     return wnd;
 }
-
-//
 
 void DiffApplication::diffScreenshot()
 {

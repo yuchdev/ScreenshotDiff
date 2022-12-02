@@ -2,9 +2,7 @@
 #include <QLayout>
 #include <QScreen>
 #include <QDesktopWidget>
-#include <QStandardPaths>
 #include <QApplication>
-#include <QDir>
 #include <QFile>
 #include "screenshot_widget.h"
 
@@ -41,22 +39,12 @@ void ScreenshotWidget::makeScreenshot()
     saveScreenshot(pic);
 }
 
-QString ScreenshotWidget::saveScreenshot(const QPixmap& pic)
+void ScreenshotWidget::saveScreenshot(const QPixmap& pic)
 {
-    QStringList appLocalPath = QStandardPaths::standardLocations(QStandardPaths::HomeLocation);
-
-    if (appLocalPath.isEmpty()) {
-        return QString{};
-    }
-
-    QString picturePath = QDir(appLocalPath[0]).filePath(fileName_);
-    QFile file(picturePath);
+    QFile file(fileName_);
     file.open(QIODevice::WriteOnly);
-
-    // write screenshotWidget file
     pic.save(&file, "jpg");
     file.close();
-    return picturePath;
 }
 
 void ScreenshotWidget::displayScreenshot(const QPixmap &pic)

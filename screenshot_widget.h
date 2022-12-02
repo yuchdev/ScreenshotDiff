@@ -9,15 +9,16 @@ class ScreenshotWidget : public QWidget
 
 public:
 
+    /// @brief Show full-screen screenshotWidget
     explicit ScreenshotWidget(QWidget* parent = nullptr);
 
     /// @brief Show full-screen screenshotWidget
     void makeScreenshot();
 
-    /// Save screenshotWidget as a file
-    QString saveScreenshot(const QPixmap& pic);
+    /// @brief Save screenshotWidget as a file
+    void saveScreenshot(const QPixmap& pic);
 
-    /// Display screenshot in a widget
+    /// @brief Display screenshot in a widget
     void displayScreenshot(const QPixmap& pic);
 
     /// @brief Set filename to save
@@ -25,10 +26,10 @@ public:
 
 private:
 
-    /// Full-screen image
+    /// Display picture with screen diff
     QLabel* screen_picture_;
 
-    /// wallpaper file created in a temp dir
+    /// Filename to save
     QString fileName_;
 };
 

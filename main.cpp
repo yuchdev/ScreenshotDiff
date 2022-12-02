@@ -1,4 +1,3 @@
-#include <ctime>
 #include <QApplication>
 #include <QtGui>
 #include <QWidget>
@@ -15,6 +14,5 @@ int main(int argc, char **argv)
     QRect screen = QGuiApplication::screens()[0]->geometry();
     wnd.resize(screen.width() / 2, screen.height() / 2);
     wnd.show();
-
-    return app.exec();
+    return QApplication::exec();
 }
