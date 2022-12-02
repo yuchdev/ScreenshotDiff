@@ -1,6 +1,6 @@
 #pragma once
 #include <QWidget>
-#include "full_screen.h"
+
 
 class QLabel;
 class QPushButton;

@@ -9,7 +9,7 @@
 #include <QTime>
 #include <QFile>
 #include <QMessageBox>
-#include "full_screen.h"
+#include "screenshot_widget.h"
 
 ScreenshotWidget::ScreenshotWidget(QWidget* parent /*= nullptr*/) :
     QWidget(parent)

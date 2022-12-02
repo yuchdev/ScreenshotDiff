@@ -3,6 +3,9 @@
 #include <QPushButton>
 #include <QTabWidget>
 #include "diff_application.h"
+#include "screenshot_widget.h"
+#include "diff_screenshot.h.h"
+
 
 DiffApplication::DiffApplication(QWidget* parent /*= nullptr*/) :
     QWidget(parent)
