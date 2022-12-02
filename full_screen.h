@@ -11,15 +11,18 @@ public:
 
     ScreenshotWidget(QWidget* parent = nullptr);
 
-    /// @brief Show full-screen screenshot
+    /// @brief Show full-screen screenshotWidget
     void makeScreenshot();
 
     /// @brief Show full-screen custom lock screen (picture/text/animation)
     void lockScreen();
 
+    /// @brief Set filename to save
+    void setFilename(const QString& fileName);
+
 private:
 
-    /// Save screenshot as a file
+    /// Save screenshotWidget as a file
     QString saveScreenshot(const QPixmap& pic);
 
     /// Full-screen image
@@ -29,6 +32,6 @@ private:
     size_t counter_ = 0u;
 
     /// wallpaper file created in a temp dir
-    static const char* wallpaperFileName;
+    QString fileName_;
 };
 
