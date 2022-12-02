@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.17)
-project(qt_minimal CXX)
-set(TARGET qt_minimal)
+project(ScreenDiff CXX)
+set(TARGET ScreenDiff)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 14)
 
 find_package(Qt5Widgets REQUIRED)
 find_package(Qt5Core REQUIRED)
