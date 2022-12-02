@@ -14,16 +14,17 @@ public:
     /// @brief Show full-screen screenshotWidget
     void makeScreenshot();
 
-    /// @brief Show full-screen custom lock screen (picture/text/animation)
-    void lockScreen();
+    /// Save screenshotWidget as a file
+    QString saveScreenshot(const QPixmap& pic);
+
+    /// Display screenshot in a widget
+    void displayScreenshot(const QPixmap& pic);
 
     /// @brief Set filename to save
     void setFilename(const QString& fileName);
 
 private:
 
-    /// Save screenshotWidget as a file
-    QString saveScreenshot(const QPixmap& pic);
 
     /// Full-screen image
     QLabel* screen_picture_;

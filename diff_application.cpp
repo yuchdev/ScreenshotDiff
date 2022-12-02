@@ -1,16 +1,18 @@
 #include <QLayout>
-#include <QMessageBox>
+#include <QLabel>
 #include <QPushButton>
 #include <QTabWidget>
 #include "diff_application.h"
 #include "screenshot_widget.h"
-#include "diff_screenshot.h"
 
 //static
 const char* DiffApplication::firstFilename{"DD02FBA6-73FD-4171-B9CF-5F9F5CDB41AA.jpg"};
 
 //static
 const char* DiffApplication::secondFilename{"DD02FBA6-73FD-4171-B9CF-5F9F5CDB41BB.jpg"};
+
+//static
+const char* DiffApplication::diffFilename{"DD02FBA6-73FD-4171-B9CF-5F9F5CDB41CC.jpg"};
 
 DiffApplication::DiffApplication(QWidget* parent /*= nullptr*/) :
     QWidget(parent)
@@ -22,22 +24,22 @@ DiffApplication::DiffApplication(QWidget* parent /*= nullptr*/) :
 
 void DiffApplication::initWidgets()
 {
-    QVBoxLayout* layout = new QVBoxLayout;
-    layout->addWidget(button_layout(this));
-    layout->addWidget(tab_layout(this));
+    auto* layout = new QVBoxLayout;
+    layout->addWidget(buttonLayout(this));
+    layout->addWidget(tabLayout(this));
     layout->setMargin(3);
 
     this->setLayout(layout);
 }
 
-QWidget* DiffApplication::button_layout(QWidget* parent){
+QWidget* DiffApplication::buttonLayout(QWidget* parent){
 
-    QWidget* wgt = new QWidget(parent);
+    auto* wgt = new QWidget(parent);
 
     makeScreenshotBtn_ = new QPushButton("Screenshot");
     diffScreenshotBtn_ = new QPushButton("Diff");
 
-    QHBoxLayout* buttonLayout = new QHBoxLayout();
+    auto* buttonLayout = new QHBoxLayout();
     buttonLayout->setMargin(5);
     buttonLayout->setSpacing(5);
 
@@ -53,42 +55,39 @@ QWidget* DiffApplication::button_layout(QWidget* parent){
 void DiffApplication::makeScreenshot()
 {
     active_picture_->makeScreenshot();
-    if (active_picture_ == first_picture_){
-        active_picture_ = second_picture_;
+    if (active_picture_ == firstPictureWgt_){
+        active_picture_ = secondPictureWgt_;
     }
     else {
-        active_picture_ = first_picture_;
+        active_picture_ = firstPictureWgt_;
     }
 }
 
-QWidget* DiffApplication::tab_layout(QWidget* parent)
+QWidget* DiffApplication::tabLayout(QWidget* parent)
 {
     QTabWidget* wnd = new QTabWidget;
     QVBoxLayout* box = new QVBoxLayout();
-    first_picture_ = new ScreenshotWidget(this);
-    second_picture_ = new ScreenshotWidget(this);
+    firstPictureWgt_ = new ScreenshotWidget(this);
+    secondPictureWgt_ = new ScreenshotWidget(this);
+    firstPictureWgt_->setFilename(firstFilename);
+    secondPictureWgt_->setFilename(secondFilename);
 
-    wnd->addTab(screenshotWidget(this), "First Screenshot");
-    wnd->addTab(screenshotWidget(this), "Second Screenshot");
-    wnd->addTab(diff_screenshot(this), "Diff Screenshot");
-    active_picture_ = first_picture_;
+    QWidget* pictureTab = new QWidget;
+    QVBoxLayout* pictureLayout = new QVBoxLayout;
+    diffPicture_ = new QLabel;
+    pictureLayout->addWidget(diffPicture_);
+    pictureTab->setLayout(pictureLayout);
+
+    wnd->addTab(firstPictureWgt_, "First Screenshot");
+    wnd->addTab(secondPictureWgt_, "Second Screenshot");
+    wnd->addTab(pictureTab, "Diff Screenshot");
+    active_picture_ = firstPictureWgt_;
 
     wnd->setLayout(box);
     return wnd;
 }
 
 //
-QWidget* DiffApplication::screenshotWidget(QWidget* parent)
-{
-    return new ScreenshotWidget(this);
-}
-
-
-//
-QWidget* DiffApplication::diff_screenshot(QWidget* parent)
-{
-    return new DiffScreenshotWidget(this);
-}
 
 void DiffApplication::diffScreenshot()
 {
@@ -107,5 +106,14 @@ void DiffApplication::diffScreenshot()
             rgbResult[j] = rgbLeft[j]-rgbRigth[j];
         }
     }
+    // Save resultImage as a file with name diffFilename
+    resultImage.save(diffFilename);
+    displayDiffImage();
+}
+
+void DiffApplication::displayDiffImage()
+{
+    // Display picture with 'diffFilename' in 'diffPicture_' label
+    diffPicture_->setPixmap(QPixmap(diffFilename));
 }
 

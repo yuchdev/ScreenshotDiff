@@ -25,18 +25,27 @@ public slots:
 
 private:
 
+    /// @brief Display picture with 'diffFilename' in 'diffPicture_' label
+    void displayDiffImage();
+
+    ///
     QPushButton* makeScreenshotBtn_ = nullptr;
+
+    ///
     QPushButton* diffScreenshotBtn_ = nullptr;
 
-    QWidget* button_layout(QWidget* parent);
-    QWidget* tab_layout(QWidget* parent);
-    QWidget* screenshotWidget(QWidget* parent);
-    QWidget* diff_screenshot(QWidget* parent);
+    ///
+    QLabel* diffPicture_;
 
-    ScreenshotWidget* first_picture_ = nullptr;
-    ScreenshotWidget* second_picture_ = nullptr;
+
+    QWidget* buttonLayout(QWidget* parent);
+    QWidget* tabLayout(QWidget* parent);
+
+    ScreenshotWidget* firstPictureWgt_ = nullptr;
+    ScreenshotWidget* secondPictureWgt_ = nullptr;
     ScreenshotWidget* active_picture_ = nullptr;
 
     static const char* firstFilename;
     static const char* secondFilename;
+    static const char* diffFilename;
 };

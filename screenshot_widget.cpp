@@ -5,8 +5,6 @@
 #include <QStandardPaths>
 #include <QApplication>
 #include <QDir>
-#include <QTimer>
-#include <QTime>
 #include <QFile>
 #include <QMessageBox>
 #include "screenshot_widget.h"
@@ -15,6 +13,7 @@ ScreenshotWidget::ScreenshotWidget(QWidget* parent /*= nullptr*/) :
     QWidget(parent)
 {
     screen_picture_ = new QLabel(this);
+    screen_picture_->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addWidget(screen_picture_);
@@ -29,31 +28,40 @@ void ScreenshotWidget::setFilename(const QString& fileName)
 
 void ScreenshotWidget::makeScreenshot()
 {
-    QDesktopWidget* pwgt = QApplication::desktop();
+    QDesktopWidget* desktop = QApplication::desktop();
+    screen_picture_->setMinimumSize(desktop->size() / 2);
+
     QScreen *screen = QGuiApplication::primaryScreen();
     if (!screen) {
         // we can't do anything
         return;
     }
-    
+
     QPixmap pic = screen->grabWindow(0);
-    screen_picture_->setMinimumSize(pwgt->size());
-    screen_picture_->setPixmap(pic.scaled(screen_picture_->size()));    
+    displayScreenshot(pic);
+    saveScreenshot(pic);
 }
 
 QString ScreenshotWidget::saveScreenshot(const QPixmap& pic)
 {
-    QStringList tempPaths = QStandardPaths::standardLocations(QStandardPaths::TempLocation);
+    QStringList appLocalPath = QStandardPaths::standardLocations(QStandardPaths::AppLocalDataLocation);
 
-    if (tempPaths.isEmpty()) {
+    if (appLocalPath.isEmpty()) {
         return QString{};
     }
 
-    QString wallpaperPath = QDir(tempPaths[0]).filePath(fileName_);
-    QFile file(wallpaperPath);
+    QString picturePath = QDir(appLocalPath[0]).filePath(fileName_);
+    QFile file(picturePath);
     file.open(QIODevice::WriteOnly);
 
     // write screenshotWidget file
     pic.save(&file, "jpg");
     file.close();
+    return picturePath;
+}
+
+void ScreenshotWidget::displayScreenshot(const QPixmap &pic)
+{
+    // Scale displayed picture twice as smaller
+    screen_picture_->setPixmap(pic.scaled(screen_picture_->size() / 2));
 }
